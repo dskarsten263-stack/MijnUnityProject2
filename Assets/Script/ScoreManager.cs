@@ -1,33 +1,36 @@
-
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    // Singleton
     public static ScoreManager Instance;
 
-    // Totale score
-    public int score = 0;
-
+    public int score;
+    public int multiplier = 1;
 
     private void Awake()
     {
-        // controleren of er al een ScoreManager bestaat
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
-        // dit is nu de enige ScoreManager in de scene
         Instance = this;
     }
 
-    // functie om punten toe te voegen
-    public void AddScore(int amount)
+    public void AddScore(int basePoints)
     {
-        score = score + amount;
-        // debug voor testen
-        Debug.Log("Score: " + score);
+        int finalPoints = basePoints * multiplier;
+        score += finalPoints;
+
+        // Stuur score + multiplier naar UI
+        combo.OnScoreChange?.Invoke(score, multiplier);
+
+        Debug.Log($"Score: {score} | Multiplier: x{multiplier}");
+    }
+
+    public void SetMultiplier(int newMultiplier)
+    {
+        multiplier = newMultiplier;
+        combo.OnScoreChange?.Invoke(score, multiplier);
     }
 }

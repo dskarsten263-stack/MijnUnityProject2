@@ -1,7 +1,25 @@
 using UnityEngine;
 public class Shoot : MonoBehaviour
 {
+
+        //snelheid waarmee de lijn groeit
+    [SerializeField] private float lineSpeed = 10f;
+    //verwijzing naar de linerenderer
+    private LineRenderer _line;
+    //we houden hiermee bij of de lijn actief is of niet
+    private bool _lineActive = false;
     //De waarden van deze variabelen kun je in de inspector editen dankzij [SerializeField]
+
+    private void Start()
+    {
+        //we vragen het Line Renderer component op en slaan deze op in een variabele zodat we er later dingen mee kunnen doen
+        _line = GetComponent<LineRenderer>();
+        //We pakken het eindpunt van de lijn en zetten deze op positie 0,0,0 (zelfde plek als het beginpunt). Hierdoor word de lijn onzichtbaar. Punt 0 is het beginpunt en punt 1 het eindpunt.
+        _line.SetPosition(1, Vector3.zero);
+        //_line.SetPosition(0,Vector3.one); zou het beginpunt aanpassen. Maar dat is niet nodig nu.
+
+    }
+ 
 
     //in de inspector moet de prefab van de bal in dit veld (variabele) gesleept worden.
     [SerializeField] private GameObject prefab;
@@ -22,12 +40,13 @@ public class Shoot : MonoBehaviour
         HandleShot();
     }
     //Die functie scrijven we zelf
-    private void HandleShot() {
+    private void HandleShot()
+    {
         //Check of de linkermuisknop word ingedrukt (alleen het eerste moment van indrukken)
         if (Input.GetMouseButtonDown(0))
         {
-            _pressTimer = 0; //reset de timer weer op 0. Verderop gaan we de tijd hierin bijhouden hoe lang we de knop hebben ingehouden
-
+            _pressTimer = 0f; //reset de timer weer op 0. Verderop gaan we de tijd hierin bijhouden hoe lang we de knop hebben ingehouden
+            _lineActive = true;
         }
         //Check of je de linkermuisknop loslaat.
         if (Input.GetMouseButtonUp(0))
@@ -49,11 +68,21 @@ public class Shoot : MonoBehaviour
 
             /*Plaats de bal op dezelfde plek als het kanon zodat deze op die plek in de scene verschijnt*/
             ball.transform.position = transform.position;
+
+            _lineActive = false;
+            _line.SetPosition(1, Vector3.zero);
         }
         /*Om te voorkomen dat we oneindige kracht mee kunnen geven beperken we de tijd die we maximaal bij gaan houden. Deze maximum tijd kunnen we in seconden instellen in de inspector (maximumHoldTime)*/
-        if(_pressTimer < maximumHoldTime){
+        if (_pressTimer < maximumHoldTime)
+        {
             /*Elk frame tellen we de duur van het frame op bij de verstreken tijd sinds we de knop in hebben gedrukt. Zodra we deze los laten weten we dus hoe lang dit duurde */
             _pressTimer += Time.deltaTime;
         }
+
+            if (_lineActive) {
+            _line.SetPosition(1, Vector3.right * _pressTimer * lineSpeed);
     }
+    }
+    
+    
 }
