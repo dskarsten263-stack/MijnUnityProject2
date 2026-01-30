@@ -114,3 +114,18 @@ In deze opdracht is een combo-systeem gebouwd voor het Peggle-spel. Bumpers zijn
 <img width="512" height="465" alt="Scherm­afbeelding 2025-12-15 om 14 15 10" src="https://github.com/user-attachments/assets/11b44563-65dc-4b0a-b1e3-1bf04b3b14b1" />
 
 
+# Les 5.2 – Particles, Sound & Screenshake
+
+## Beschrijving
+In deze opdracht zijn particle effecten, geluid en screenshake toegevoegd aan het Peggle-spel om meer impact en feedback te geven wanneer de bal een bumper raakt.  
+Elke bumper speelt een particle effect af bij een hit en er wordt een geluidseffect afgespeeld. Daarnaast trilt het scherm kort om de impact van de botsing te versterken.
+
+De bumpers sturen via een `Action` event (`onHitBumper`) door wanneer ze geraakt worden. Dit event wordt gebruikt om meerdere systemen tegelijk aan te sturen, zoals particles, audio en screenshake. De screenshake wordt uitgevoerd met een coroutine, zodat de camera over meerdere frames vloeiend beweegt en daarna terugkeert naar zijn originele positie.
+
+In de demo is te zien dat bij elke bumper-hit een explosie-effect verschijnt, een geluid wordt afgespeeld en het scherm kort schudt voor extra game feel.
+
+## Demo
+
+
+# Code
+
